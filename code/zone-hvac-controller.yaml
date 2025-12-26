@@ -1,0 +1,245 @@
+# HVAC Zone Controller ESPHome Configuration
+
+esphome:
+  name: "hvac-zone-controller"
+  friendly_name: HVAC Zone Controller
+  # on_boot:
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino  # Change to "esp-idf" going forward, see https://esphome.io/guides/esp32_arduino_to_idf/
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "TOKEN"
+
+ota:
+  - platform: esphome
+    password: "PASSWORD"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Zone-Hvac-Controller"
+    password: "PASSWORD" 
+
+captive_portal:
+
+substitutions:
+  delay_zone_damper: "20"         # Give 20+ sec for dampers to open/close plus settling time
+  delay_heat_cool_lockout: "300"  # Give 300 sec for heat-cool cycle lockout time
+  delay_hvac: "20s"               # Give 20+ sec for HVAC heat/cool/fan to turn on/off plus settling time
+  delay_purge: "120s"             # Give 120 sec for purge time after heat/cool cycle
+
+# use interlock to prevent a group of relays from being on at the same time e.g. heat and cool relays or zone dampers relays
+# Relay 1 = Heat
+# Relay 2 = Cool
+# Relay 3 = Fan
+# Relay 4 = Unused
+# Relay 5 = Unused
+# Relay 6 = Unused
+# Relay 7 = Close Upstairs Zone
+# Relay 8 = Close Downstairs Zone
+switch:
+  # Optional - useful for testing setup
+  - platform: gpio
+    name: "Test LED"
+    pin: GPIO23
+
+  - platform: gpio
+    name: "Relay 1 (Heat)"
+    id: "relay_heat"    
+    pin: GPIO32
+    interlock: [relay_cool]
+    interlock_wait_time: 
+      seconds: ${delay_heat_cool_lockout}  
+
+  - platform: gpio
+    name: "Relay 2 (Cool)"
+    id: "relay_cool"
+    pin: GPIO33
+    interlock: [relay_heat]
+    interlock_wait_time: 
+      seconds: ${delay_heat_cool_lockout}
+    on_turn_on: 
+      then:
+        - switch.turn_on: relay_fan
+
+  - platform: gpio
+    name: "Relay 3 (Fan)"
+    id: "relay_fan"
+    pin: GPIO25
+    on_turn_off: 
+      then:
+        - switch.turn_off: relay_cool
+
+  - platform: gpio
+    name: "Relay 4"
+    pin: GPIO26
+
+  - platform: gpio
+    name: "Relay 5"
+    pin: GPIO27
+
+  - platform: gpio
+    name: "Relay 6"
+    pin: GPIO14
+
+  - platform: gpio
+    name: "Relay 7 (Close Upstairs Zone)"
+    id: "relay_close_upstairs_zone"
+    pin: GPIO12
+    interlock: [relay_close_downstairs_zone]
+    interlock_wait_time: 
+      seconds: ${delay_zone_damper}
+
+  - platform: gpio
+    name: "Relay 8 (Close Downstairs Zone)"
+    id: "relay_close_downstairs_zone"
+    pin: GPIO13
+    interlock: [relay_close_upstairs_zone]
+    interlock_wait_time: 
+      seconds: ${delay_zone_damper}    
+
+binary_sensor:
+  - platform: status
+    name: "ESPHome Status"
+
+script:
+  - id: handle_error
+    then:
+      - logger.log: "Error detected, sending alert to Home Assistant"
+      - homeassistant.service:
+          service: notify.notify
+          data:
+            message: "HVAC Controller Error: Relay or Communication Failure"
+
+  - id: check_communication
+    then:
+      - delay: 5min
+      - if:
+          condition:
+            api.connected:
+          then:
+            - logger.log: "Communication re-established"
+          else:
+            - logger.log: "Communication failed, setting cycle to Off"
+            - select.set: 
+                id: cycle_state
+                option: "Off"                              
+
+# HVAC Zone States - All, Upstairs, Downstairs
+# HVAC Cycle States - Off, Heat, Cool, Purge, Fan
+# The relays are carefully sequenced for safe HVAC operation and avoid conflicting states
+select:
+  - platform: template
+    name: "HVAC Zone State"
+    id: zone_state
+    options:
+     - "All"
+     - "Upstairs"
+     - "Downstairs"
+    initial_option: "All"
+    optimistic: true
+    on_value: 
+      then:
+        - if:
+            condition:
+              - lambda: 'return x == "Upstairs";'
+            then: 
+              - switch.turn_on: relay_close_downstairs_zone
+            else:
+              - if:
+                  condition:
+                    - lambda: 'return x == "Downstairs";'
+                  then: 
+                    - switch.turn_on: relay_close_upstairs_zone
+                  else:
+                    - switch.turn_off: relay_close_downstairs_zone
+                    - switch.turn_off: relay_close_upstairs_zone
+
+  - platform: template
+    name: "HVAC Cycle State"
+    id: cycle_state
+    options:
+     - "Off"
+     - "Heat"
+     - "Cool"
+     - "Purge"
+     - "Fan"
+    initial_option: "Off"
+    optimistic: true
+    on_value: 
+      then:
+        - if:
+            condition:
+              - lambda: 'return x == "Heat";'
+            then: 
+              - if:
+                  condition:
+                    - switch.is_on: relay_fan
+                  then: 
+                    - switch.turn_off: relay_fan
+                    - delay: ${delay_hvac}
+              - switch.turn_on: relay_heat
+            else:
+              - if:
+                  condition:
+                    - lambda: 'return x == "Cool";'
+                  then: 
+                    - switch.turn_on: relay_fan
+                    - delay: ${delay_hvac}
+                    - switch.turn_on: relay_cool
+                  else:
+                    - if:
+                        condition:
+                          - lambda: 'return x == "Purge";'
+                        then: 
+                          - select.set: 
+                              id: zone_state
+                              option: "All"                              
+                          - if:
+                              any:
+                                - switch.is_on: relay_heat
+                                - switch.is_on: relay_cool                                
+                              then: 
+                                - switch.turn_off: relay_heat
+                                - switch.turn_off: relay_cool
+                                - delay: ${delay_hvac}
+                          - if:
+                              all:
+                                - switch.is_off: relay_heat
+                                - switch.is_off: relay_cool                                
+                              then: 
+                                - switch.turn_on: relay_fan
+                                - delay: ${delay_purge}
+                                - select.set: 
+                                    id: cycle_state
+                                    option: "Off"                              
+                        else:
+                          - if:
+                              condition:
+                                - lambda: 'return x == "Fan";'
+                              then: 
+                                - switch.turn_on: relay_fan
+                              else:
+                                - if:
+                                    any:
+                                      - switch.is_on: relay_heat
+                                      - switch.is_on: relay_cool                                
+                                    then: 
+                                      - switch.turn_off: relay_heat
+                                      - switch.turn_off: relay_cool
+                                      - delay: ${delay_hvac}
+                                - switch.turn_off: relay_fan
+                                - select.set: 
+                                    id: zone_state
+                                    option: "All"                              

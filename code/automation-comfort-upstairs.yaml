@@ -1,0 +1,19 @@
+# Home Assistant Automation for setting the upstairs thermostat to comfort mode based on a schedule
+
+alias: Thermostat Comfort Upstairs
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - schedule.thermostat_scheduler_upstairs
+    from: "off"
+    to: "on"
+conditions: []
+actions:
+  - action: climate.set_preset_mode
+    metadata: {}
+    data:
+      preset_mode: comfort
+    target:
+      entity_id: climate.thermostat_heater_upstairs
+mode: single

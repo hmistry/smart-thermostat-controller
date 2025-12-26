@@ -1,0 +1,18 @@
+# ApexCharts Card Configuration for HVAC Daily Heat Time
+
+type: custom:apexcharts-card
+header:
+  show: true
+  title: HVAC Daily Heat Time (Hrs)
+  show_states: true
+  colorize_states: true
+graph_span: 30d
+span:
+  end: day
+series:
+  - entity: sensor.hvac_daily_heat_stats
+    type: column
+    group_by:
+      duration: 1d
+      func: last
+      

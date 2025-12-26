@@ -1,0 +1,31 @@
+# Home Assistant Automation for updating the HVAC Zone controller states upon Wifi reconnection
+
+alias: Zone HVAC Controller Reconnect Update
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - binary_sensor.zone_hvac_controller_esphome_status
+    from: "off"
+    to: "on"
+conditions: []
+actions:
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+    enabled: true
+  - action: automation.trigger
+    metadata: {}
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.hvac_heat_on
+  - action: automation.trigger
+    metadata: {}
+    data:
+      skip_condition: true
+    target:
+      entity_id: automation.hvac_heat_off
+mode: single

@@ -1,0 +1,69 @@
+# Home Assistant Automation for turning off HVAC heating based on thermostat heat switches for upstairs and downstairs zones
+
+# Sets the HVAC cycle state to Purge if both heat switches are off
+# Sets the zone state based on which heat switches are still on
+
+alias: HVAC Heat Off
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - switch.thermostat_heat_downstairs
+      - switch.thermostat_heat_upstairs
+    from: "on"
+    to: "off"
+conditions: []
+actions:
+  - condition: state
+    entity_id: select.zone_hvac_controller_hvac_cycle_state
+    state: Heat
+  - choose:
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: switch.thermostat_heat_downstairs
+                state: "off"
+              - condition: state
+                entity_id: switch.thermostat_heat_upstairs
+                state: "off"
+        sequence:
+          - action: select.select_option
+            metadata: {}
+            data:
+              option: Purge
+            target:
+              entity_id: select.zone_hvac_controller_hvac_cycle_state
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: switch.thermostat_heat_downstairs
+                state: "off"
+              - condition: state
+                entity_id: switch.thermostat_heat_upstairs
+                state: "on"
+        sequence:
+          - action: select.select_option
+            metadata: {}
+            data:
+              option: Upstairs
+            target:
+              entity_id: select.zone_hvac_controller_hvac_zone_state
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: switch.thermostat_heat_downstairs
+                state: "on"
+              - condition: state
+                entity_id: switch.thermostat_heat_upstairs
+                state: "off"
+        sequence:
+          - action: select.select_option
+            metadata: {}
+            data:
+              option: Downstairs
+            target:
+              entity_id: select.zone_hvac_controller_hvac_zone_state
+mode: single

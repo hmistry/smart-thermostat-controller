@@ -1,0 +1,36 @@
+# Default configuration.yaml for Home Assistant
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Use MariaDB since Sqlite3 keeps getting corrupted
+recorder:
+  db_url: mysql://mysql_db_url
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+
+homeassistant:
+  customize:
+    climate.thermostat_heater_upstairs:
+      target_temp_step: 0.5 
+      target_temperature_step: 0.5 
+      precision: 0.1
+    climate.thermostat_heater_downstairs:
+      target_temp_step: 0.5 
+      target_temperature_step: 0.5
+      precision: 0.1
+    climate.thermostat_ac_upstairs:
+      target_temp_step: 0.5 
+      target_temperature_step: 0.5 
+      precision: 0.1
+    climate.thermostat_ac_downstairs:
+      target_temp_step: 0.5 
+      target_temperature_step: 0.5
+      precision: 0.1

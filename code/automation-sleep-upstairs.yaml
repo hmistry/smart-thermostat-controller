@@ -1,0 +1,19 @@
+# Home Assistant Automation for setting the upstairs thermostat to sleep mode based on a schedule
+
+alias: Thermostat Sleep Upstairs
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - schedule.thermostat_scheduler_upstairs
+    from: "on"
+    to: "off"
+conditions: []
+actions:
+  - action: climate.set_preset_mode
+    metadata: {}
+    data:
+      preset_mode: sleep
+    target:
+      entity_id: climate.thermostat_heater_upstairs
+mode: single

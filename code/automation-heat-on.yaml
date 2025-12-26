@@ -1,0 +1,119 @@
+# Home Assistant Automation for turning on HVAC heating based on thermostat heat switches for upstairs and downstairs zones
+
+# Waits for any ongoing Purge cycle to complete before activating heating
+# Sets the HVAC cycle state to Heat and sets the zone state based on which heat switches are on
+# If both zones are set to heat, waits up to 15 minutes for current zone to be turned off before setting zone state to All.
+# This was added to reduce energy consumption because running all zones at once took twice as long than heating both zones individually.
+
+alias: HVAC Heat On
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - switch.thermostat_heat_upstairs
+      - switch.thermostat_heat_downstairs
+    from: "off"
+    to: "on"
+conditions: []
+actions:
+  - sequence:
+      - if:
+          - condition: state
+            entity_id: select.zone_hvac_controller_hvac_cycle_state
+            state: Purge
+        then:
+          - wait_for_trigger:
+              - trigger: state
+                entity_id:
+                  - select.zone_hvac_controller_hvac_cycle_state
+                from: Purge
+                to: "Off"
+            continue_on_timeout: true
+          - delay:
+              hours: 0
+              minutes: 1
+              seconds: 0
+              milliseconds: 0
+      - if:
+          - condition: or
+            conditions:
+              - condition: state
+                entity_id: switch.thermostat_heat_downstairs
+                state: "on"
+              - condition: state
+                entity_id: switch.thermostat_heat_upstairs
+                state: "on"
+        then:
+          - action: select.select_option
+            metadata: {}
+            data:
+              option: Heat
+            target:
+              entity_id: select.zone_hvac_controller_hvac_cycle_state
+      - choose:
+          - conditions:
+              - condition: state
+                entity_id: switch.thermostat_heat_downstairs
+                state: "off"
+              - condition: state
+                entity_id: switch.thermostat_heat_upstairs
+                state: "on"
+            sequence:
+              - action: select.select_option
+                metadata: {}
+                data:
+                  option: Upstairs
+                target:
+                  entity_id: select.zone_hvac_controller_hvac_zone_state
+          - conditions:
+              - condition: state
+                entity_id: switch.thermostat_heat_downstairs
+                state: "on"
+              - condition: state
+                entity_id: switch.thermostat_heat_upstairs
+                state: "off"
+            sequence:
+              - action: select.select_option
+                metadata: {}
+                data:
+                  option: Downstairs
+                target:
+                  entity_id: select.zone_hvac_controller_hvac_zone_state
+          - conditions:
+              - condition: state
+                entity_id: switch.thermostat_heat_downstairs
+                state: "on"
+              - condition: state
+                entity_id: switch.thermostat_heat_upstairs
+                state: "on"
+            sequence:
+              - wait_for_trigger:
+                  - trigger: state
+                    entity_id:
+                      - switch.thermostat_heat_downstairs
+                      - switch.thermostat_heat_upstairs
+                    from: "on"
+                    to: "off"
+                timeout:
+                  hours: 0
+                  minutes: 15
+                  seconds: 0
+                  milliseconds: 0
+              - if:
+                  - condition: and
+                    conditions:
+                      - condition: state
+                        entity_id: switch.thermostat_heat_downstairs
+                        state: "on"
+                      - condition: state
+                        entity_id: switch.thermostat_heat_upstairs
+                        state: "on"
+                then:
+                  - action: select.select_option
+                    metadata: {}
+                    data:
+                      option: All
+                    target:
+                      entity_id: select.zone_hvac_controller_hvac_zone_state
+                    enabled: true
+mode: single

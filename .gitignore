@@ -1,0 +1,6 @@
+.ruby-lsp/
+tmp/
+blog-post.md
+*.html
+*.pdf
+.DS_Store

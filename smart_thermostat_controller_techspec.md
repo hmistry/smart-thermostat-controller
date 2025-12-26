@@ -4,6 +4,8 @@
 - Created: 12/01/2025
 - Updated: 12/26/2025
 
+*Disclaimer: I'm no expert. The information in this repository is based on my research and what I built to solve the problem I had. It does not express or imply you should do the same nor guarantees it will solve your HVAC issues.  It is provided "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED as stated in the [License][license].*
+
 ## Overview
 
 The objective is to develop a lower-cost, scalable room-sensing thermostat and HVAC controller whose algorithm/rules can be customized to optimize an HVAC system to the home’s enviroment and the residents’ comfort. This solution aims to significantly reduce thermal variations and enhance comfort within the constraints of the HVAC system and the home.
@@ -362,7 +364,8 @@ Various references that may be useful to development.
 <!-- Document/Section Links -->
 [contextSection]: #context
 [futureGoals]: #future-goals
-[prdFile]: smart_thermostat_controller_prd.md
+[license]: <LICENSE>
+[prdFile]: <smart_thermostat_controller_prd.md>
 [prodTechRequirements]: #producttechnical-requirements
 
 <!-- ESPHome Links -->

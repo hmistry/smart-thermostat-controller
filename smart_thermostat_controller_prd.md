@@ -4,6 +4,8 @@
 - Created: 12/01/2025
 - Updated: 12/26/2025
 
+*Disclaimer: I'm no expert. The information in this repository is based on my research and what I built to solve the problem I had. It does not express or imply you should do the same nor guarantees it will solve your HVAC issues.  It is provided "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED as stated in the [License][license].*
+
 ## Problem
 
 Forced-air HVAC systems (HVAC - Heating, Ventilation, and Air-Conditioning) are very popular in the US, but they are commonly plagued with poor thermal distribution, especially in residential homes. Different rooms and floors end up at varying temperatures, leaving the residents in either cold, medium, or hot spaces. Sometimes it even causes thermostat wars between residents. We won't go into the pros/cons of forced-air HVAC compared to hydronic or other HVAC systems but focus on building a solution to improve the thermal distribution with the existing HVAC system.
@@ -24,7 +26,7 @@ A number of companies and DIY'ers over the years have tried to address this prob
 
 ## Solution
 
-Design a low-cost, scalable room-sensing thermostat and HVAC controller whose algorithm/rules can be customized to optimize an HVAC system depending on the home and residents' preferences. There can be limitations to achieving ideal thermal distribution due to the lack of fine control in the HVAC system components and the home, but the goal is to improve as much as we can with those limitations over existing solutions in the market. Having the ability to log various performance data will make it easier to optimize the system over time. If the system can integrate with the smart home network, then we can use existing smart home sensors for presence/temperature signals, thereby reducing duplication of sensors and cost to the homeowner.
+Design a lower-cost, scalable room-sensing thermostat and HVAC controller whose algorithm/rules can be customized to optimize an HVAC system depending on the home and residents' preferences. There can be limitations to achieving ideal thermal distribution due to the lack of fine control in the HVAC system components and the home, but the goal is to improve as much as we can with those limitations over existing solutions in the market. Having the ability to log various performance data will make it easier to optimize the system over time. If the system can integrate with the smart home network, then we can use existing smart home sensors for presence/temperature signals, thereby reducing duplication of sensors and cost to the homeowner.
 
 ## Use Cases
 
@@ -122,6 +124,8 @@ For MVP:
 1. Physical controller with display.
 1. Any high-effort, complex integrations that aren't necessary for the core functionality as described in v1.0.
 
+<!-- Document/Web Links -->
+[license]: <LICENSE>
+[amazonThermostat]: https://www.amazon.com/Amazon-Smart-Thermostat/dp/B08J4C8871
 [ecobeeThermostat]: https://www.ecobee.com/
 [nestThermostat]: https://store.google.com/us/category/nest_thermostats
-[amazonThermostat]: https://www.amazon.com/Amazon-Smart-Thermostat/dp/B08J4C8871

@@ -4,6 +4,8 @@
 - Created: 12/01/2025
 - Updated: 12/26/2025
 
+*Disclaimer: I'm no expert. The information in this repository is based on my research and what I built to solve the problem I had. It does not express or imply you should do the same nor guarantees it will solve your HVAC issues.  It is provided "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED as stated in the [License][license].*
+
 ## Overview
 
 This document describes the final design, implementation, and performance results of the lower-cost, scalable room-sensing Smart Thermostat Controller described in the [Technical Specification][techSpec]. The implementation matches the proposed architecture.
@@ -264,6 +266,7 @@ Overall, this architecture is a good foundation for more advanced residential HV
 
 <!-- Document Links -->
 [homeAssistantHvacDashboard]: <reference/HA-HVAC-Dashboard.pdf>
+[license]: <LICENSE>
 [techSpec]: <smart_thermostat_controller_techspec.md>
 [xiaomiConfiguration]: <reference/Xiaomi-Temp-Sensor-Config-Params.pdf>
 

@@ -4,14 +4,6 @@
 - Created: 12/01/2025
 - Updated: 12/26/2025
 
-<style>
-  img {
-    width: 50%;
-    height: 50%;
-    align: center;
-  }
-</style>
-
 ## Overview
 
 The objective is to develop a lower-cost, scalable room-sensing thermostat and HVAC controller whose algorithm/rules can be customized to optimize an HVAC system to the home’s enviroment and the residents’ comfort. This solution aims to significantly reduce thermal variations and enhance comfort within the constraints of the HVAC system and the home.

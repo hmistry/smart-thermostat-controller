@@ -4,14 +4,6 @@
 - Created: 12/01/2025
 - Updated: 12/26/2025
 
-<style>
-  img {
-    width: 50%;
-    height: 50%;
-    align: center;
-  }
-</style>
-
 ## Overview
 
 This document describes the final design, implementation, and performance results of the lower-cost, scalable room-sensing Smart Thermostat Controller described in the [Technical Specification][techSpec]. The implementation matches the proposed architecture.

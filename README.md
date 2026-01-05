@@ -4,11 +4,12 @@
 
 This is a DIY project to build a lower-cost, room-sensing, customizable smart thermostat controller that solves the uneven thermal distribution problems faced with forced-air HVAC at home.
 
-See the following documents to learn more (or skip to #3 for design and results):
+See the following documents to learn more (or skip to #4 for summary article or #3 for in-depth design and results):
 
 1. [Product Requirements Document][prd]: Outlines the why, goals, and available market solutions.
 2. [Technical Specifications][techSpec]: Outlines the problem analysis, technical specs to solve it, and proposed solution.
 3. [Final Design and Results][designResults]: Details the final implementation and results.
+4. [Blog Post][blogPost]: Article summarizing the project from problem, solution, and results.
 
 ## Photos
 
@@ -21,6 +22,7 @@ See the following documents to learn more (or skip to #3 for design and results)
 [prd]: <smart_thermostat_controller_prd.md>
 [techSpec]:<smart_thermostat_controller_techspec.md>
 [designResults]: <smart_thermostat_controller_design.md>
+[blogPost]: <blog-post.md>
 
 [xiaomiTempSensor]: <images/Xiaomi-Temp-Sensor.jpg>
 [rPi]: <images/RPi-Hardware.jpg>

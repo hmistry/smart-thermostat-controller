@@ -1,5 +1,5 @@
 .ruby-lsp/
 tmp/
 *.html
-*.pdf
+/*.pdf
 .DS_Store

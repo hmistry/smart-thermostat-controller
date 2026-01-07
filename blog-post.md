@@ -108,8 +108,8 @@ This solution is not a silver bullet. It still requires occasional user interven
 
 ## References
 
-For in-depth details on implementation and results, see [Smart Thermostat Controller Design and Results][stcDesignGithubLink]
-Other information available in [Smart Thermostat Controller Github repository][stcGithubLink]
+- For in-depth details on implementation and results, see [Smart Thermostat Controller Design and Results][stcDesignGithubLink]
+- Other information available in [Smart Thermostat Controller Github repository][stcGithubLink]
 
 [stcGithubLink]: https://github.com/hmistry/smart-thermostat-controller
 [stcDesignGithubLink]: https://github.com/hmistry/smart-thermostat-controller/blob/main/smart_thermostat_controller_design.md

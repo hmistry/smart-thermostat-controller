@@ -2,7 +2,7 @@
 
 Most residential forced-air HVAC systems struggle with uneven heating and cooling — not because of bad equipment, but because they lack the sensing and control needed to adapt to real-world conditions inside a home.
 
-After years of dealing with hot and cold rooms in a home with two-zone forced-air HVAC system, I built a custom room-sensing thermostat controller to address the root causes. After ten months of daily use, the home has been noticeably more comfortable, with only a modest increase in energy usage.
+After years of dealing with hot and cold rooms in a home with two-zone forced-air HVAC system, I built a custom room-sensing thermostat controller to address the root causes with a budget-friendly cost structure. After ten months of daily use, the home has been noticeably more comfortable, with only a modest increase in energy usage.
 
 This post explains why most thermostat designs fall short and what worked better in practice.
 
@@ -35,8 +35,8 @@ Factors contributing to uneven heat distribution in this example are:
 
 The key insight was simple:
 
-1. Control decisions should be based on room-level temperature data, not hallway averages. In practice, temperature does not equalize quickly enough to rely on averaging.
-2. The control strategy must be customizable and allow algorithms beyond simple averaging.
+1. Thermostat control decisions should be based on room-level temperature data, not hallway averages. In practice, temperature does not equalize quickly enough to rely on averaging.
+2. The thermostat control strategy must be customizable and allow algorithms beyond simple averaging.
 
 #### Architecture
 
@@ -99,17 +99,18 @@ I implemented the above solution with 9 Temperature sensors including 1 outside 
 6. Cheaper than commercial solutions
    - 9 Temperature sensors ($36) + Raspberry Pi 5 ($140) + ESP32 x8 Relay Board ($44) = $220
    - Compared to an Ecobee (2x$120) + 6 Room sensors ($240) + Zone Controller ($150) = $630
+   - Adding temperature sensors is cheap at $4 each
 
 ## Conclusion
 
-Many of the comfort issues I had lived with for years—hot and cold rooms, overheated hallways, and slow recovery from afternoon solar heat gain—turned out to be artifacts of poor sensing and overly simple control logic. I was surprised by how effective room-level sensing and a window-based control strategy turned out to be, and the experience has changed how I think about residential HVAC systems. The biggest gains did not come from adding AI, machine learning, or fancy hardware, but from giving the system better inputs and using the right control logic to respond to real conditions instead of averaged data.
+Many of the comfort issues I had lived with for years—hot and cold rooms, overheated hallways, and slow recovery from afternoon solar heat gain—turned out to be artifacts of poor sensing and overly simple control logic. I was surprised by how effective room-level sensing and a window-based control strategy turned out to be, and the experience has changed how I think about residential HVAC systems. The biggest gains did not come from adding AI, machine learning, or fancy hardware, but from giving the system better inputs and using the right control logic to respond to real conditions instead of averaged data. The secondary benefit is a better cost structure by unifying the controller and for scaling sensing in a home.
 
 This solution is not a silver bullet. It still requires occasional user intervention when there are large temperature differences between rooms, as well as some technical knowledge to build and maintain. But after ten months of use, it has delivered a level of comfort that commercial thermostats never achieved in my home, and it reinforces a simple idea: comfort improves when control decisions are made closer to where people actually live.
 
 ## References
 
 - For in-depth details on implementation and results, see [Smart Thermostat Controller Design and Results][stcDesignGithubLink]
-- Other information available in [Smart Thermostat Controller Github repository][stcGithubLink]
+- Other project information is available in [Smart Thermostat Controller Github repository][stcGithubLink]
 
 [stcGithubLink]: https://github.com/hmistry/smart-thermostat-controller
 [stcDesignGithubLink]: https://github.com/hmistry/smart-thermostat-controller/blob/main/smart_thermostat_controller_design.md

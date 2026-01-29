@@ -360,6 +360,9 @@ Various references that may be useful to development.
 - DAT sensor for HVAC furnace:
   - https://documents.alpinehomeair.com/product/C7835A%201009%20installation%20instructions.pdf
   - https://esphome.io/components/sensor/resistance.html
+- HVAC Gas Furnace Control Board Diagram with explanation:
+  - https://www.youtube.com/watch?v=2bbZbrHIX2w
+  - https://www.youtube.com/watch?v=lYxMIzV1v1w
 
 <!-- Document/Section Links -->
 [contextSection]: #context

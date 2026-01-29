@@ -33,9 +33,9 @@ Design a lower-cost, scalable room-sensing thermostat and HVAC controller whose 
 Here are residential use cases and which are targeted cases to solve for.
 
 | Floors | Rooms | Target Use Case | Notes |
-|--------|-------|-----------------|-------|
-| 1   | 1-2 Bedrooms + Kitchen + Living | No | Overall area is small, and the system should be able to heat the home with acceptable variation. However, they may benefit from our solution but are not our main target. |
-| 1   | >=3 Bedrooms + Kitchen + Dining + Living | Yes | May have zones or can benefit from shifting target temperatures in different sections of the house depending on time/occupancy/heating distribution. |
+| -------- | ------- | ----------------- | ------- |
+| 1 | 1-2 Bedrooms + Kitchen + Living | No | Overall area is small, and the system should be able to heat the home with acceptable variation. However, they may benefit from our solution but are not our main target. |
+| 1 | >=3 Bedrooms + Kitchen + Dining + Living | Yes | May have zones or can benefit from shifting target temperatures in different sections of the house depending on time/occupancy/heating distribution. |
 | >=2 | >=2 Bedrooms + Kitchen + Dining + Living | Yes | - May have zones (assume by floors) or can benefit from shifting target temperatures in different sections of the house depending on time/occupancy/heating distribution. <br> - Downstairs heat could rise and accumulate in upper floor hallways. |
 
 ## Value Proposition
@@ -79,9 +79,9 @@ Cost models for how much current market solutions would cost a homeowner:
 - Honeywell Zone Controller costs $150.
 
 | Thermostat | Room Sensors | Temperature Read Algorithm | Cost (1s/3b) | Cost (2s/2b) | Cost (2s/2z/4b) |
-|------------|--------------|----------------------------|--------------|--------------|-----------------|
+| ------------ | -------------- | ---------------------------- | -------------- | -------------- | ----------------- |
 | [Ecobee][ecobeeThermostat] | - Yes, up to 32, with motion <br> - $50/sensor | - Average of participating sensors in a mode <br> - Create modes and schedule modes, e.g. home, away, sleep <br> - Occupancy takes a few minutes to assume adding/removing a room in the algorithm to prevent false triggers for short activity | $150 + $50*2 = **$250** | $150 + $50*3 = **$300** | 2*$150 + $50*5 + $150 = **$700** |
-| [Nest][nestThermostat]   | - Yes, up to 6/thermostat & 18/home <br> - $40/sensor | - Set target sensor on a schedule <br> - Takes average if multiple sensors | $150 + $40*2 = **$230** | $150 + $40*3 = **$270** | 2*$150 + $40*5 + $150 = **$650** |
+| [Nest][nestThermostat] | - Yes, up to 6/thermostat & 18/home <br> - $40/sensor | - Set target sensor on a schedule <br> - Takes average if multiple sensors | $150 + $40*2 = **$230** | $150 + $40*3 = **$270** | 2*$150 + $40*5 + $150 = **$650** |
 | [Amazon][amazonThermostat] | - Yes, using Amazon Air Quality Sensor or Amazon Dot, up to 10 sensors <br> - $70/AQ sensor or $50/Dot | - Uses average of participating sensors in a mode <br> - Can use Alexa routines to add custom rules to include/exclude sensors based on time | $70 + $50*2 = **$170** | $70 + $50*3 = **$220** | 2*$70 + $50*5 + $150 = **$540** |
 
 ## Key Features and Roadmap
@@ -108,14 +108,14 @@ Cost models for how much current market solutions would cost a homeowner:
 
 ## User Stories and Requirements
 
-| Scenario                | User Story |
-|-------------------------| ---------- |
-| Installation            | As a DIY user, I want to easily install the thermostat/controller hardware, similar to installing any thermostat and zone controller. I want to easily set up a Home Automation platform if required. |
-| Setup                   | As a DIY user, I want to configure the room sensors, thermostat, and zone controller. I want to set up automations and schedules on the Home Automation platform. |
+| Scenario | User Story |
+| ------------------------- | ---------- |
+| Installation | As a DIY user, I want to easily install the thermostat/controller hardware, similar to installing any thermostat and zone controller. I want to easily set up a Home Automation platform if required. |
+| Setup | As a DIY user, I want to configure the room sensors, thermostat, and zone controller. I want to set up automations and schedules on the Home Automation platform. |
 | Change temperature setting | As a user, I want to change the current temperature targets and/or schedule. |
 | Review performance data | As a user and DIY user, I want to review the performance data, e.g. room temperatures, HVAC on/off times, zones on/off, etc. |
-| Turn on/off             | As a user, I want to be able to turn on or off the HVAC. |
-| Alerts                  | As a user, I want to be notified if there is an error or issue. |
+| Turn on/off | As a user, I want to be able to turn on or off the HVAC. |
+| Alerts | As a user, I want to be notified if there is an error or issue. |
 
 ## Out of Scope
 
